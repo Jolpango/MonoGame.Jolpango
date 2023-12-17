@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monogame.Jolpango.Utilities
+namespace MonoGame.Jolpango.Utilities
 {
     public delegate void MonoTimerCallback();
     // UpdateSharedTimers needs to be called for shared timers to work

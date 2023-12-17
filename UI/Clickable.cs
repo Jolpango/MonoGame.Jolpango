@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monogame.Jolpango.UI
+namespace MonoGame.Jolpango.UI
 {
     public class Clickable
     {

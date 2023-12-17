@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monogame.Jolpango.Graphics
+namespace MonoGame.Jolpango.Graphics
 {
     public class Particle
     {
