@@ -13,6 +13,7 @@ namespace MonoGame.Jolpango.Graphics
         public static ParticleEmitter Shared { get; set; }
         public List<Particle> Particles { get; set; }
         public Texture2D Texture { get; set; }
+        public float LayerDepth { get; set; } = 1.0f;
         public ParticleEmitter(Texture2D texture)
         {
             Texture = texture;
@@ -21,7 +22,7 @@ namespace MonoGame.Jolpango.Graphics
 
         public void Emit(Vector2 position, Color color)
         {
-            Particles.Add(Particle.CreateParticle(Texture, position, color));
+            Particles.Add(Particle.CreateParticle(Texture, position, color, layerDepth: LayerDepth));
         }
 
         public void Emit(Vector2 position, int amount, Color color)
@@ -36,7 +37,7 @@ namespace MonoGame.Jolpango.Graphics
         {
             for (int i = 0; i < amount; i++)
             {
-                Emit(Particle.CreateParticle(Texture, position, color, minSpeed, maxSpeed));
+                Emit(Particle.CreateParticle(Texture, position, color, minSpeed, maxSpeed, LayerDepth));
             }
         }
 

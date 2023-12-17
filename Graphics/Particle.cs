@@ -39,7 +39,7 @@ namespace MonoGame.Jolpango.Graphics
             spriteBatch.Draw(Texture, Position, null, Color * Alpha, Rotation, Vector2.Zero, Vector2.One, SpriteEffects.None, LayerDepth);
         }
 
-        public static Particle CreateParticle(Texture2D texture, Vector2 origin, Color color, int minSpeed = 1, int maxSpeed = 10)
+        public static Particle CreateParticle(Texture2D texture, Vector2 origin, Color color, int minSpeed = 1, int maxSpeed = 10, float layerDepth = 1.0f)
         {
             Particle particle = new Particle(texture, origin);
             particle.Color = color;
@@ -47,6 +47,7 @@ namespace MonoGame.Jolpango.Graphics
             direction.Normalize();
             particle.Direction = direction;
             particle.Speed = Random.Shared.Next(minSpeed, maxSpeed);
+            particle.LayerDepth = layerDepth;
             return particle;
         }
     }
