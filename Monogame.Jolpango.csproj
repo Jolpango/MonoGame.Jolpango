@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Jolpangos Monogame Utilities</Title>
+    <Title>Jolpangos MonoGame Utilities</Title>
     <Copyright>MIT</Copyright>
     <PackageProjectUrl></PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -30,5 +30,6 @@
   </ItemGroup>
   <PropertyGroup>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<Version>1.0.1</Version>
   </PropertyGroup>
 </Project>
