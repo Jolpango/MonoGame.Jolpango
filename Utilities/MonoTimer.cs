@@ -24,7 +24,7 @@ namespace Monogame.Jolpango.Utilities
 
         public void Update(GameTime gameTime)
         {
-            time -= gameTime.ElapsedGameTime.Seconds;
+            time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (time < 0)
             {
                 callback();

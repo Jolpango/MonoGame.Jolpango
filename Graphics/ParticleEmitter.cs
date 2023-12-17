@@ -10,6 +10,7 @@ namespace Monogame.Jolpango.Graphics
 {
     public class ParticleEmitter
     {
+        public static ParticleEmitter Shared { get; set; }
         public List<Particle> Particles { get; set; }
         public Texture2D Texture { get; set; }
         public ParticleEmitter(Texture2D texture)
@@ -18,16 +19,24 @@ namespace Monogame.Jolpango.Graphics
             Particles = new List<Particle>();
         }
 
-        public void Emit(Vector2 position)
+        public void Emit(Vector2 position, Color color)
         {
-
+            Particles.Add(Particle.CreateParticle(Texture, position, color));
         }
 
-        public void Emit(Vector2 position, int amount)
+        public void Emit(Vector2 position, int amount, Color color)
         {
             for (int i = 0; i < amount; i++)
             {
-                Particles.Add(Particle.CreateParticle(Texture, position));
+                Emit(position, color);
+            }
+        }
+
+        public void Emit(Vector2 position, int amount, int minSpeed, int maxSpeed, Color color)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                Emit(Particle.CreateParticle(Texture, position, color, minSpeed, maxSpeed));
             }
         }
 

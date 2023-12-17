@@ -19,7 +19,7 @@ namespace Monogame.Jolpango.Graphics
         public float Alpha { get; set; } = 1.0f;
         public float LayerDepth { get; set; } = 1.0f;
         public float Timer { get; set; } = 1.0f;
-
+        public Color Color { get; set; } = Color.White;
         public Particle(Texture2D texture, Vector2 origin)
         {
             Texture = texture;
@@ -28,24 +28,25 @@ namespace Monogame.Jolpango.Graphics
         public void Update(GameTime gameTime)
         {
             // TODO: Use fancy function to lerp or something
-            Position = Position + (Direction * (Speed * gameTime.ElapsedGameTime.Seconds));
+            Position = Position + (Direction * (Speed * (float)gameTime.ElapsedGameTime.TotalSeconds));
             // TODO: Use fancy function to alpha it
-            Alpha = Alpha - FadeOut * gameTime.ElapsedGameTime.Seconds;
-            Timer -= gameTime.ElapsedGameTime.Seconds;
+            Alpha = Alpha - FadeOut * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White * Alpha, Rotation, Vector2.Zero, Vector2.One, SpriteEffects.None, LayerDepth);
+            spriteBatch.Draw(Texture, Position, null, Color * Alpha, Rotation, Vector2.Zero, Vector2.One, SpriteEffects.None, LayerDepth);
         }
 
-        public static Particle CreateParticle(Texture2D texture, Vector2 origin)
+        public static Particle CreateParticle(Texture2D texture, Vector2 origin, Color color, int minSpeed = 1, int maxSpeed = 10)
         {
             Particle particle = new Particle(texture, origin);
+            particle.Color = color;
             Vector2 direction = new Vector2(Random.Shared.Next(-10, 10), Random.Shared.Next(-10, 10));
             direction.Normalize();
             particle.Direction = direction;
-            particle.Speed = Random.Shared.Next(1, 10);
+            particle.Speed = Random.Shared.Next(minSpeed, maxSpeed);
             return particle;
         }
     }
