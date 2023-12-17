@@ -30,6 +30,7 @@
   </ItemGroup>
   <PropertyGroup>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<Version>1.0.1</Version>
+	<Version>1.2.0</Version>
+	<PackageReleaseNotes>Add layerdepth to particles. Will use layerdepth from its ParticleEmitter</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
