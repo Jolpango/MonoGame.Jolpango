@@ -5,18 +5,25 @@ namespace MonoGame.Jolpango.Utilities
     public enum EasingFunction
     {
         EaseInOutQuad,
-        EaseOutBack
+        EaseOutBack,
+        EaseInCubic,
+        EaseOutCubic
     }
     public static class JMath
     {
+        private static Random random = new Random();
         public static Vector2 GetRandomDirection()
         {
             Vector2 randomDirection = new Vector2(
-                ((float)Random.Shared.NextDouble() * 2.0f) - 1,
-                ((float)Random.Shared.NextDouble() * 2.0f) - 1
+                ((float)random.NextDouble() * 2.0f) - 1,
+                ((float)random.NextDouble() * 2.0f) - 1
             );
             randomDirection.Normalize();
             return randomDirection;
+        }
+        public static double GetRandomNumber(double minimum, double maximum)
+        {
+            return random.NextDouble() * (maximum - minimum) + minimum;
         }
 
         public static Vector2 GetRandomPosition(Vector2 origin, int radius)
@@ -41,6 +48,26 @@ namespace MonoGame.Jolpango.Utilities
         public static double EaseOutBack(double x, double end)
         {
             return EaseOutBack(x / end);
+        }
+        public static double EaseInCubic(double x)
+        {
+            return x * x * x;
+        }
+
+        public static double EaseInCubic(double x, double end)
+        {
+            return EaseInCubic(x / end);
+        }
+
+        public static double EaseOutCubic(double x)
+        {
+            double f = x - 1.0;
+            return f * f * f + 1.0;
+        }
+
+        public static double EaseOutCubic(double x, double end)
+        {
+            return EaseOutCubic(x / end);
         }
         public static float Lerp(float firstFloat, float secondFloat, float weight)
         {
