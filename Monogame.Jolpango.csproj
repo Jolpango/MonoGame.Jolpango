@@ -15,6 +15,7 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Input\" />
@@ -30,7 +31,7 @@
   </ItemGroup>
   <PropertyGroup>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<Version>1.2.0</Version>
-	<PackageReleaseNotes>Add layerdepth to particles. Will use layerdepth from its ParticleEmitter</PackageReleaseNotes>
+	<Version>1.2.1</Version>
+	<PackageReleaseNotes>Fix time to live</PackageReleaseNotes>
   </PropertyGroup>
 </Project>
