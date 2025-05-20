@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Net;
+
 namespace MonoGame.Jolpango.Utilities
 {
     public enum EasingFunction
@@ -90,6 +92,70 @@ namespace MonoGame.Jolpango.Utilities
             float y = vector.X * sin + vector.Y * cos;
 
             return new Vector2(x, y);
+        }
+        public static float GetLerpedFloat(float[] values, float weight)
+        {
+            if (values is null || values.Length == 0)
+            {
+                // Return a default value if the array is empty or null
+                return 0.0f; // You can change this to any default value you prefer
+            }
+
+            if (weight <= 0f)
+            {
+                // If weight is 0 or less, return the first value
+                return values[0];
+            }
+
+            if (weight >= 1f)
+            {
+                // If weight is 1 or more, return the last value
+                return values[values.Length - 1];
+            }
+
+            // Calculate the interval size between values
+            float interval = 1f / (values.Length - 1);
+            int startIndex = (int)Math.Floor(weight / interval);
+            int endIndex = (int)Math.Ceiling(weight / interval);
+
+            // Adjust weight for the current interval
+            float adjustedWeight = (weight - startIndex * interval) / interval;
+
+            // Interpolate between the values at startIndex and endIndex
+            return values[startIndex] + (values[endIndex] - values[startIndex]) * adjustedWeight;
+        }
+        public static Vector2 CircularLerp(Vector2 start, Vector2 end, float t)
+        {
+            Vector2 direction = start - end; // Calculate the vector between start and end points
+            float radius = direction.Length(); // Calculate the radius of the circle
+
+            float startAngle = (float)Math.Atan2(direction.Y, direction.X); // Calculate starting angle
+
+            float interpolatedAngle = MathHelper.WrapAngle(LerpAngle(startAngle, 0, t)); // Interpolate angles
+
+            float x = start.X + radius * (float)Math.Cos(interpolatedAngle); // Calculate interpolated x coordinate
+            float y = start.Y + radius * (float)Math.Sin(interpolatedAngle); // Calculate interpolated y coordinate
+
+            return new Vector2(x, y);
+
+        }
+        public static float LerpAngle(float startAngle, float endAngle, float amount)
+        {
+            // Ensure the angles are in the range [0, 2π)
+            startAngle = MathHelper.WrapAngle(startAngle);
+            endAngle = MathHelper.WrapAngle(endAngle);
+
+            // Calculate the absolute difference between the angles
+            float difference = MathHelper.WrapAngle(endAngle - startAngle);
+
+            // Calculate the shortest interpolation direction
+            float shortestAngle = ((2 * difference) % MathHelper.TwoPi) - difference;
+            float interpolatedAngle = startAngle + shortestAngle * amount;
+
+            // Wrap the interpolated angle within the [0, 2π) range
+            interpolatedAngle = MathHelper.WrapAngle(interpolatedAngle);
+
+            return interpolatedAngle;
         }
     }
 }
