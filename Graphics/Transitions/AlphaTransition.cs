@@ -1,16 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Jolpango.Graphics.Particles;
 using MonoGame.Jolpango.Utilities;
+using System;
 
 namespace MonoGame.Jolpango.Graphics.Transitions
 {
     public class AlphaTransition : IParticleTransition
     {
-        public float StartAlpha { get; set; } = 1.0f;
-        public float EndAlpha { get; set; } = 0.0f;
+        public float[] Alphas { get; set; }
         public void Update(GameTime gameTime, float weight, Particle particle)
         {
-            particle.Alpha = JMath.Lerp(StartAlpha, EndAlpha, weight);
+            particle.Alpha = JMath.GetLerpedFloat(Alphas, weight);
         }
+
     }
 }
