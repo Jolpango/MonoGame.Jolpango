@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Jolpango.Graphics.Dispersion;
 using MonoGame.Jolpango.Graphics.Particles;
 using MonoGame.Jolpango.Graphics.Transitions;
+using MonoGame.Jolpango.Tiled;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,33 @@ namespace MonoGame.Jolpango.Utilities
 {
     public class JJsonLoader
     {
+        public static MapData LoadTiledMap(string filename)
+        {
+            string json = File.ReadAllText(filename);
+            MapData map = JsonConvert.DeserializeObject<MapData>(json);
+            return map;
+        }
+        public static ParticleEmitter ReadParticleEmitterFromJson(string json, Texture2D texture = null, Game game = null)
+        {
+            JObject o = JObject.Parse(json);
+            if (texture is null)
+            {
+                texture = new Texture2D(game.GraphicsDevice, 2, 2);
+                Color[] data = new Color[2 * 2];
+                for (int i = 0; i < data.Length; ++i) data[i] = Color.White;
+                texture.SetData(data);
+            }
+            IParticleTransition[] transitions = ReadTransitions(o);
+            IDispersionMethod dispersionMethod = ReadDispersionMethod(o);
+            ParticleEmitter emitter = new ParticleEmitter(texture, dispersionMethod, transitions)
+            {
+                Easing = ReadEasingFunction(o),
+                MinRadius = (int?)o.Root["radius"]["min"] ?? 1,
+                MaxRadius = (int?)o.Root["radius"]["max"] ?? 1,
+                TimeToLive = (float?)o.Root["timeToLive"] ?? 1
+            };
+            return emitter;
+        }
         public static ParticleEmitter ReadParticleEmitterFromFile(string path, Game game = null)
         {
             JObject o = JObject.Parse(File.ReadAllText(path));
@@ -68,26 +97,47 @@ namespace MonoGame.Jolpango.Utilities
                 {
                     transitions.Add(ReadScaleTransition(transition));
                 }
+                else if ((string)transition["type"] == "RotationTransition")
+                {
+                    transitions.Add(ReadRotationTransition(transition));
+                }
             }
             return transitions.ToArray();
         }
         private static AlphaTransition ReadAlphaTransition(JToken transition)
         {
+            List<float> floats = new List<float>();
+            foreach (var val in transition["alphas"])
+            {
+                floats.Add((float)val);
+            }
             AlphaTransition alphaTransition = new AlphaTransition()
             {
-                StartAlpha = (float)transition["alpha"]["start"],
-                EndAlpha = (float)transition["alpha"]["end"]
+                Alphas = floats.ToArray()
             };
             return alphaTransition;
         }
         private static ScaleTransition ReadScaleTransition(JToken transition)
         {
+            List<float> floats = new List<float>();
+            foreach (var val in transition["scales"])
+            {
+                floats.Add((float)val);
+            }
             ScaleTransition scaleTransition = new ScaleTransition()
             {
-                StartScale = (float)transition["scale"]["start"],
-                EndScale = (float)transition["scale"]["end"]
+                Scales = floats.ToArray()
             };
             return scaleTransition;
+        }
+        private static RotationTransition ReadRotationTransition(JToken transition)
+        {
+            RotationTransition rotationTransition = new RotationTransition()
+            {
+                StartRotation = (float)transition["rotation"]["start"],
+                EndRotation = (float)transition["rotation"]["end"]
+            };
+            return rotationTransition;
         }
         private static ColorTransition ReadColorTransition(JToken transition)
         {
