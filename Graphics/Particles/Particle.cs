@@ -32,7 +32,7 @@ namespace MonoGame.Jolpango.Graphics.Particles
         {
             get
             {
-                return new Vector2(Texture.Width / 2 * Scale, Texture.Height / 2 * Scale);
+                return new Vector2(Texture.Width / 2, Texture.Height / 2 );
             }
         }
         public void Update(GameTime gameTime)
@@ -45,7 +45,7 @@ namespace MonoGame.Jolpango.Graphics.Particles
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color * Alpha, Rotation, Vector2.Zero, Vector2.One * Scale, SpriteEffects.None, LayerDepth);
+            spriteBatch.Draw(Texture, Position, null, Color * Alpha, Rotation, Origin, Vector2.One * Scale, SpriteEffects.None, LayerDepth);
         }
 
         private void updateTransitions(GameTime gameTime, float weight)
