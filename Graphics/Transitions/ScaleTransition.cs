@@ -6,11 +6,10 @@ namespace MonoGame.Jolpango.Graphics.Transitions
 {
     public class ScaleTransition : IParticleTransition
     {
-        public float StartScale { get; set; } = 1.0f;
-        public float EndScale { get; set; } = 2.0f;
+        public float[] Scales { get; set; }
         public void Update(GameTime gameTime, float weight, Particle particle)
         {
-            particle.Scale = JMath.Lerp(StartScale, EndScale, weight);
+            particle.Scale = JMath.GetLerpedFloat(Scales, weight);
         }
     }
 }
