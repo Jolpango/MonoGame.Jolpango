@@ -29,32 +29,20 @@ namespace MonoGame.Jolpango.Graphics.Sprites
         public bool IsActive { get; set; } = false;
         private bool isCompleted = false;
         public bool IsLooping { get; set; } = false;
-        public bool IsCompleted
-        {
-            get => isCompleted;
-            protected set
-            {
-                if (isCompleted != value)
-                {
-                    isCompleted = value;
-                    if (isCompleted)
-                    {
-                        onCompleteAction?.Invoke();
-                    }
-                }
-            }
-        }
+        public bool IsCompleted { get; protected set; } = false;
         private Action onCompleteAction;
         public JAnimation(JAnimationCycleSettings cycleSettings)
         {
             KeyFrames = cycleSettings.Frames;
             timePerFrame = cycleSettings.FrameDuration;
-            IsLooping = cycleSettings.IsLooping;
         }
-        public void StartAnimation(Action onComplete = null)
+        public void StartAnimation(Action onComplete = null, bool loop = false)
         {
             onCompleteAction = onComplete;
             IsActive = true;
+            IsLooping = loop;
+            CurrentTime = 0;
+            IsCompleted = false;
         }
 
         public void StopAnimation()
@@ -66,12 +54,22 @@ namespace MonoGame.Jolpango.Graphics.Sprites
         {
             if (!IsActive)
                 return false;
-            CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (IsLooping)
-                return false;
 
-            if(CurrentTime >= TotalTime)
-                isCompleted = true;
+            CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (CurrentTime >= TotalTime)
+            {
+                onCompleteAction?.Invoke(); // Optional: fire on every loop completion
+                if (IsLooping)
+                {
+                    CurrentTime %= TotalTime;
+                }
+                else
+                {
+                    IsCompleted = true;
+                }
+            }
+
             return IsCompleted;
         }
     }

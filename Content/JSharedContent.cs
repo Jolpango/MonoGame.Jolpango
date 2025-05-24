@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Jolpango.Graphics.Sprites;
+using MonoGame.Jolpango.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace MonoGame.Jolpango.Content
             animationSettings.TryGetValue(name, out var settings);
             if (settings is null)
             {
-                // load it.
+                settings = JJsonLoader.ReadAnimationFromFile(name);
             }
             return settings;
         }

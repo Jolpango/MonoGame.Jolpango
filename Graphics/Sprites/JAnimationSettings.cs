@@ -22,7 +22,6 @@ namespace MonoGame.Jolpango.Graphics.Sprites
     public class JAnimationCycleSettings
     {
         public int[] Frames { get; set; }
-        public bool IsLooping { get; set; }
         public float FrameDuration { get; set; }
     }
 }

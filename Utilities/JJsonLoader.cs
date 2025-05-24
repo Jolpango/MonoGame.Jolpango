@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Jolpango.Graphics.Dispersion;
 using MonoGame.Jolpango.Graphics.Particles;
+using MonoGame.Jolpango.Graphics.Sprites;
 using MonoGame.Jolpango.Graphics.Transitions;
 using MonoGame.Jolpango.Tiled;
 using Newtonsoft.Json;
@@ -45,6 +46,32 @@ namespace MonoGame.Jolpango.Utilities
                 TimeToLive = (float?)o.Root["timeToLive"] ?? 1
             };
             return emitter;
+        }
+        public static JAnimationSettings ReadAnimationFromFile(string path)
+        {
+            //JObject o = JObject.Parse(File.ReadAllText(path));
+            //JAnimationSettings animationSettings = new JAnimationSettings();
+            //animationSettings.TextureAtlas = new JTextureAtlasSettings()
+            //{
+            //    Texture = (string)o["textureAtlas"]["texture"],
+            //    RegionWidth = (int)o["textureAtlas"]["regionWidth"],
+            //    RegionHeight = (int)o["textureAtlas"]["regionHeight"]
+            //};
+            //animationSettings.Cycles = new Dictionary<string, JAnimationCycleSettings>();
+            //foreach (var cycle in o["cycles"])
+            //{
+            //    string name = (string)cycle["name"];
+            //    JAnimationCycleSettings animationCycle = new JAnimationCycleSettings()
+            //    {
+            //        Frames = cycle["frames"].ToObject<int[]>(),
+            //        FrameDuration = (float)cycle["frameDuration"]
+            //    };
+            //    animationSettings.Cycles.Add(name, animationCycle);
+            //}
+            //return animationSettings;
+            var json = File.ReadAllText(path);
+            JAnimationSettings animationSettings = JsonConvert.DeserializeObject<JAnimationSettings>(json);
+            return animationSettings;
         }
         public static ParticleEmitter ReadParticleEmitterFromFile(string path, Game game = null)
         {

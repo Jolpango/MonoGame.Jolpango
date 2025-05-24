@@ -33,7 +33,6 @@ namespace MonoGame.Jolpango.Graphics.Sprites
         }
         public void LoadContent(ContentManager content, string animationPath)
         {
-            var json = File.ReadAllText(animationPath);
             animationSettings = JSharedContent.Instance.GetAnimation(animationPath);
             spriteSheet = new JSpriteSheet(content.Load<Texture2D>(animationSettings.TextureAtlas.Texture),
                 animationSettings.TextureAtlas.RegionWidth,
@@ -41,14 +40,14 @@ namespace MonoGame.Jolpango.Graphics.Sprites
             // Set start animation to first one. but dont play.
             currentAnimation = new JAnimation(animationSettings.Cycles.First().Value);
         }
-        public void StartAnimation(string name, Action onComplete = null)
+        public void StartAnimation(string name, Action onComplete = null, bool loop = false)
         {
             // Find animation from animation settings
             var animationCycleSettings = animationSettings.Cycles[name];
             if (animationCycleSettings is null)
                 return;
             currentAnimation = new JAnimation(animationCycleSettings);
-            currentAnimation.StartAnimation(onComplete);
+            currentAnimation.StartAnimation(onComplete: onComplete, loop: loop);
         }
         public void UnloadContent() { }
         public void Update(GameTime gameTime)
