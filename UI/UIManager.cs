@@ -48,12 +48,10 @@ namespace MonoGame.Jolpango.UI
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw UI components
-            spriteBatch.Begin();
             foreach(var element in elements)
             {
                 element.Draw(spriteBatch);
             }
-            spriteBatch.End();
         }
 
     }

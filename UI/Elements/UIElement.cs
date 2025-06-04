@@ -17,10 +17,13 @@ namespace MonoGame.Jolpango.UI.Elements
         public bool IsEnabled { get; set; } = true;
         public UIElement Parent { get; set; } = null;
 
+        public Rectangle BoundingBox => new Rectangle(Position.ToPoint(), Size.ToPoint());
+
         public virtual bool IsMouseOver(Vector2 mousePosition)
         {
-            return new Rectangle(Position.ToPoint(), Size.ToPoint()).Contains(mousePosition);
+            return BoundingBox.Contains(mousePosition);
         }
+        public virtual void LoadContent() { }
         public virtual void Update(GameTime gameTime, JMouseInput mouseInput, JKeyboardInput keyboardInput) { }
         public virtual void Draw(SpriteBatch spriteBatch)
         {

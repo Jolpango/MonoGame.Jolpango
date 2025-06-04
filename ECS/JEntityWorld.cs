@@ -24,7 +24,10 @@ namespace MonoGame.Jolpango.ECS
 
         public void LoadContent()
         {
-
+            foreach (JEntity entity in Entities)
+            {
+                entity.LoadContent();
+            }
         }
 
         public void AddEntity(JEntity e)

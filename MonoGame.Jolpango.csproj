@@ -9,11 +9,6 @@
     <RepositoryUrl>https://github.com/jolpango/Monogame.Jolpango</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Input\**" />
-    <EmbeddedResource Remove="Input\**" />
-    <None Remove="Input\**" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="UI\CustomCursor.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -21,9 +16,6 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UI\CustomCursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Update="README.md">

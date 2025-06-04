@@ -1,6 +1,8 @@
 ﻿using MonoGame.Jolpango.ECS;
+using MonoGame.Jolpango.UI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace MonoGame.Jolpango.Core
 {
@@ -26,14 +28,7 @@ namespace MonoGame.Jolpango.Core
             {
                 foreach (var component in entity.ComponentsList)
                 {
-                    foreach(var kvp in services)
-                    {
-                        var injectableType = typeof(IJInjectable<>).MakeGenericType(kvp.Key);
-                        if (injectableType.IsAssignableFrom(component.GetType()))
-                        {
-                            injectableType.GetMethod("Inject")?.Invoke(component, new[] { kvp.Value });
-                        }
-                    }
+                    Inject(component);
                 }
             }
         }
@@ -43,13 +38,23 @@ namespace MonoGame.Jolpango.Core
                 throw new ArgumentNullException(nameof(entity));
             foreach (var component in entity.ComponentsList)
             {
-                foreach (var kvp in services)
+                Inject(component);
+            }
+        }
+
+        /// <summary>
+        /// Injects required services into the injectable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="injectable"></param>
+        public void Inject<T>(T injectable)
+        {
+            foreach (var kvp in services)
+            {
+                var injectableType = typeof(IJInjectable<>).MakeGenericType(kvp.Key);
+                if (injectableType.IsAssignableFrom(injectable.GetType()))
                 {
-                    var injectableType = typeof(IJInjectable<>).MakeGenericType(kvp.Key);
-                    if (injectableType.IsAssignableFrom(component.GetType()))
-                    {
-                        injectableType.GetMethod("Inject")?.Invoke(component, new[] { kvp.Value });
-                    }
+                    injectableType.GetMethod("Inject")?.Invoke(injectable, new[] { kvp.Value });
                 }
             }
         }

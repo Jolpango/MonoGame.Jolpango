@@ -27,7 +27,6 @@ namespace MonoGame.Jolpango.ECS
         {
             component.Parent = this;
             components[typeof(T)] = component;
-            component.LoadContent();
         }
 
         public T GetComponent<T>() where T : JComponent
@@ -43,6 +42,14 @@ namespace MonoGame.Jolpango.ECS
             }
             return null;
         }
+        public void LoadContent()
+        {
+            foreach (var comp in components.Values)
+            {
+                comp.LoadContent();
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             foreach (var c in components.Values) c.Update(gameTime);

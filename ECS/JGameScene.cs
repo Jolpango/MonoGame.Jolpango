@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Jolpango.Core;
 using MonoGame.Jolpango.Input;
 using MonoGame.Jolpango.UI;
+using MonoGame.Jolpango.UI.Elements;
 using System;
 
 namespace MonoGame.Jolpango.ECS
@@ -10,15 +11,17 @@ namespace MonoGame.Jolpango.ECS
     public class JGameScene
     {
         private JEntityWorld entityWorld;
-        private UIScene uiManager;
+        private UIManager uiManager;
         private JServiceInjector serviceInjector;
         private JKeyboardInput keyboardInput;
         private JMouseInput mouseInput;
         private Game game;
+        public bool IsLoaded { get; private set; } = false;
+        public bool IsInjected { get; private set; } = false;
         public JGameScene(Game game, JMouseInput mouseInput = null, JKeyboardInput keyboardInput = null)
         {
             entityWorld = new JEntityWorld();
-            uiManager = new UIScene();
+            uiManager = new UIManager();
             serviceInjector = new JServiceInjector();
             this.mouseInput = mouseInput ?? new JMouseInput();
             this.keyboardInput = keyboardInput ?? new JKeyboardInput();
@@ -37,11 +40,20 @@ namespace MonoGame.Jolpango.ECS
         }
         public void AddEntity(JEntity entity)
         {
-            serviceInjector.InjectAll(entity);
+            if (IsInjected)
+                serviceInjector.InjectAll(entity);
+            if (IsLoaded)
+                entity.LoadContent();
             entityWorld.AddEntity(entity);
+        }
+        public void AddUIElement(UIElement element)
+        {
+            uiManager.AddElement(element);
         }
         public void LoadContent()
         {
+            IsLoaded = true;
+            InjectAllServices();
             entityWorld.LoadContent();
             uiManager.LoadContent();
         }
@@ -54,12 +66,32 @@ namespace MonoGame.Jolpango.ECS
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            uiManager.Draw(spriteBatch);
-            entityWorld.Draw(spriteBatch);
+            DrawEntityWorld(spriteBatch);
+            DrawUI(spriteBatch);
         }
         public void UnloadContent()
         {
             entityWorld.UnloadContent();
+        }
+
+        private void InjectAllServices()
+        {
+            IsInjected = true;
+            serviceInjector.InjectAll(entityWorld.Entities);
+            serviceInjector.Inject(uiManager);
+        }
+
+        private void DrawUI(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+            uiManager.Draw(spriteBatch);
+            spriteBatch.End();
+        }
+        private void DrawEntityWorld(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+            entityWorld.Draw(spriteBatch);
+            spriteBatch.End();
         }
     }
 }
