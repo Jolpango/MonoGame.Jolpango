@@ -7,14 +7,24 @@ using System.Diagnostics;
 
 namespace MonoGame.Jolpango.ECS
 {
-    public class JScene
+    public class JEntityWorld
     {
         private List<JEntity> entities = new();
         private JPhysicsSystem physicsSystem;
 
+        public List<JEntity> Entities
+        {
+            get { return entities; }
+        }
+
         public void SetPhysicsSystem(JPhysicsSystem physicsSystem)
         {
             this.physicsSystem = physicsSystem;
+        }
+
+        public void LoadContent()
+        {
+
         }
 
         public void AddEntity(JEntity e)
@@ -40,7 +50,10 @@ namespace MonoGame.Jolpango.ECS
         public void Update(GameTime gameTime)
         {
             foreach (var e in entities) e.Update(gameTime);
-            physicsSystem.Update(gameTime);
+            if(physicsSystem is not null)
+            {
+                physicsSystem.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

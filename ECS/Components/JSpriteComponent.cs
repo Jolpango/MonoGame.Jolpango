@@ -1,23 +1,33 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Jolpango.Content;
+using MonoGame.Jolpango.Core;
 using MonoGame.Jolpango.Graphics.Sprites;
 using System;
 
 namespace MonoGame.Jolpango.ECS.Components
 {
-    public class JSpriteComponent : JComponent
+    public class JSpriteComponent : JComponent, IJInjectable<ContentManager>
     {
         private JSprite sprite = new JSprite();
         private string spritePath;
+        private ContentManager contentManager;
         public JSpriteComponent(string spritePath)
         {
             this.spritePath = spritePath;
         }
 
+        public void Inject(ContentManager service)
+        {
+            if (service is null)
+                throw new ArgumentNullException(nameof(service));
+            contentManager = service;
+        }
+
         public override void LoadContent()
         {
-            sprite.LoadContent(JSharedContent.Instance.Game.Content, spritePath);
+            sprite.LoadContent(contentManager, spritePath);
         }
 
         public override void UnloadContent()

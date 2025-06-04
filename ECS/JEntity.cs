@@ -15,6 +15,14 @@ namespace MonoGame.Jolpango.ECS
         public string Name { get; set; } = "Unnamed Entity";
         public HashSet<string> Tags {  get; set; }
 
+
+        public List<JComponent> ComponentsList
+        {
+            get
+            {
+                return components.Values.ToList();
+            }
+        }
         public void AddComponent<T>(T component) where T : JComponent
         {
             component.Parent = this;
