@@ -1,0 +1,29 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Jolpango.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MonoGame.Jolpango.UI.Elements
+{
+    public abstract class UIElement
+    {
+        public Vector2 Position { get; set; }
+        public Vector2 Size { get; set; }
+        public bool IsVisible { get; set; } = true;
+        public bool IsEnabled { get; set; } = true;
+        public UIElement Parent { get; set; } = null;
+
+        public virtual bool IsMouseOver(Vector2 mousePosition)
+        {
+            return new Rectangle(Position.ToPoint(), Size.ToPoint()).Contains(mousePosition);
+        }
+        public virtual void Update(GameTime gameTime, JMouseInput mouseInput, JKeyboardInput keyboardInput) { }
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+        }
+    }
+}
