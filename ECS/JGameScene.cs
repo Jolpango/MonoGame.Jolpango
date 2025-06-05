@@ -30,15 +30,15 @@ namespace MonoGame.Jolpango.ECS
             RegisterService(this.keyboardInput);
             RegisterService(this.game.Content);
         }
-        public void RegisterService<T>(T service)
+        public virtual void RegisterService<T>(T service)
         {
             serviceInjector.RegisterService(service);
         }
-        public void SetPhysicsSystem(JPhysicsSystem physicsSystem)
+        public virtual void SetPhysicsSystem(JPhysicsSystem physicsSystem)
         {
             entityWorld.SetPhysicsSystem(physicsSystem);
         }
-        public void AddEntity(JEntity entity)
+        public virtual void AddEntity(JEntity entity)
         {
             if (IsInjected)
                 serviceInjector.InjectAll(entity);
@@ -46,30 +46,30 @@ namespace MonoGame.Jolpango.ECS
                 entity.LoadContent();
             entityWorld.AddEntity(entity);
         }
-        public void AddUIElement(UIElement element)
+        public virtual void AddUIElement(UIElement element)
         {
             uiManager.AddElement(element);
         }
-        public void LoadContent()
+        public virtual void LoadContent()
         {
             IsLoaded = true;
             InjectAllServices();
             entityWorld.LoadContent();
             uiManager.LoadContent();
         }
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             keyboardInput.Update();
             mouseInput.Update();
             uiManager.Update(gameTime);
             entityWorld.Update(gameTime);
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             DrawEntityWorld(spriteBatch);
             DrawUI(spriteBatch);
         }
-        public void UnloadContent()
+        public virtual void UnloadContent()
         {
             entityWorld.UnloadContent();
         }

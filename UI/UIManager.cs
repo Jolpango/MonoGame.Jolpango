@@ -44,6 +44,10 @@ namespace MonoGame.Jolpango.UI
         public void Update(GameTime gameTime)
         {
             // Update UI components, handle input, etc.
+            foreach (var element in elements)
+            {
+                element.Update(gameTime, mouseInput, keyboardInput);
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
