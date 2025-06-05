@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Jolpango.Input;
 using System.Collections.Generic;
 
 namespace MonoGame.Jolpango.UI.Elements.Containers
@@ -44,7 +45,6 @@ namespace MonoGame.Jolpango.UI.Elements.Containers
 
         public virtual void RecalculateSize()
         {
-            // Calculate bounds from padded content
             if (children.Count > 0)
             {
                 Vector2 min = children[0].Position;
@@ -59,12 +59,21 @@ namespace MonoGame.Jolpango.UI.Elements.Containers
                     max = Vector2.Max(max, bottomRight);
                 }
 
-                this.Size = (max - min) + Padding; // account for bottom/right padding
+                Size = (max - min) + Padding;
             }
             else
             {
-                this.Size = Padding;
+                Size = Padding;
             }
+        }
+
+        public override void Update(GameTime gameTime, JMouseInput mouseInput, JKeyboardInput keyboardInput)
+        {
+            foreach(UIElement child in children)
+            {
+                child.Update(gameTime, mouseInput, keyboardInput);
+            }
+            base.Update(gameTime, mouseInput, keyboardInput);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

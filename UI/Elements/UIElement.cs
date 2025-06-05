@@ -29,7 +29,7 @@ namespace MonoGame.Jolpango.UI.Elements
 
         public virtual bool IsMouseOver(Vector2 mousePosition)
         {
-            Debug.WriteLine("Mouse over element " + this.ToString());
+            //Debug.WriteLine("Mouse over element " + this.ToString());
             return BoundingBox.Contains(mousePosition);
         }
         public virtual void LoadContent() { }
